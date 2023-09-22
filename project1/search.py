@@ -93,7 +93,7 @@ def graphSearch(problem: SearchProblem, fringe):
         if problem.isGoalState(node.state): return node.path
         if node.state in explored: continue
         explored.add(node.state)
-        for (state, action, cost) in problem.getSuccessors(node.state):
+        for (state, action, _) in problem.getSuccessors(node.state):
             child = Node(state, node.path + [action])
             fringe.push(child)
 
