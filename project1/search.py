@@ -96,8 +96,6 @@ def graphSearch(problem, fringe):
             child = Node(state, node.path + [action])
             fringe.push(child)
 
-    return None
-
 
 def depthFirstSearch(problem):
     """ Search the deepest nodes in the search tree first.  """
@@ -137,8 +135,6 @@ def aStarSearch(problem, heuristic=nullHeuristic):
         for (state, action, cost) in problem.getSuccessors(node.state):
             child = Node(state, node.path + [action], cost=node.cost + cost)
             fringe.push(child, child.cost + heuristic(state, problem))
-
-    return None
 
 
 # Abbreviations
