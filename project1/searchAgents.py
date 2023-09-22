@@ -338,13 +338,13 @@ class CornersProblem(search.SearchProblem):
         """
         return (self.startingPosition, (False, False, False, False))
 
-    def isGoalState(self, state):
+    def isGoalState(self, state : tuple):
         """
         Returns whether this search state is a goal state of the problem.
         """
         return all(state[1])
 
-    def getSuccessors(self, state):
+    def getSuccessors(self, state : tuple):
         """
         Returns successor states, the actions they require, and a cost of 1.
 
@@ -387,7 +387,7 @@ class CornersProblem(search.SearchProblem):
         return len(actions)
 
 
-def cornersHeuristic(state, problem):
+def cornersHeuristic(state : tuple, problem : search.SearchProblem):
     """
     A heuristic for the CornersProblem that you defined.
 
@@ -485,7 +485,7 @@ class AStarFoodSearchAgent(SearchAgent):
         self.searchType = FoodSearchProblem
 
 
-def foodHeuristic(state, problem):
+def foodHeuristic(state : tuple, problem : search.SearchProblem):
     """
     Your heuristic for the FoodSearchProblem goes here.
 

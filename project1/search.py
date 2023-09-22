@@ -82,7 +82,7 @@ def tinyMazeSearch(problem):
     return [s, s, w, s, w, w, s, w]
 
 
-def graphSearch(problem, fringe):
+def graphSearch(problem : SearchProblem, fringe):
     """ Generic graph search algorithm """
     explored = set()
 
@@ -98,18 +98,18 @@ def graphSearch(problem, fringe):
             fringe.push(child)
 
 
-def depthFirstSearch(problem):
-    """ Search the deepest nodes in the search tree first.  """
+def depthFirstSearch(problem : SearchProblem):
+    """ Search the deepest nodes in the search tree first. """
     return graphSearch(problem, util.Stack())
 
 
-def breadthFirstSearch(problem):
-    """Search the shallowest nodes in the search tree first."""
+def breadthFirstSearch(problem : SearchProblem):
+    """ Search the shallowest nodes in the search tree first. """
     return graphSearch(problem, util.Queue())
 
 
-def uniformCostSearch(problem):
-    """Search the node of least total cost first."""
+def uniformCostSearch(problem : SearchProblem):
+    """ Search the node of least total cost first. """
     return aStarSearch(problem)
 
 
@@ -121,8 +121,8 @@ def nullHeuristic(state, problem=None):
     return 0
 
 
-def aStarSearch(problem, heuristic=nullHeuristic):
-    """Search the node that has the lowest combined cost and heuristic first."""
+def aStarSearch(problem : SearchProblem, heuristic=nullHeuristic):
+    """ Search the node that has the lowest combined cost and heuristic first. """
     fringe = util.PriorityQueue()
     explored = set()
 
