@@ -336,8 +336,7 @@ class CornersProblem(search.SearchProblem):
         Returns the start state (in your state space, not the full Pacman state
         space)
         """
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return self.startingPosition
 
     def isGoalState(self, state):
         """
@@ -358,12 +357,7 @@ class CornersProblem(search.SearchProblem):
         """
 
         successors = []
-        for action in [
-            Directions.NORTH,
-            Directions.SOUTH,
-            Directions.EAST,
-            Directions.WEST,
-        ]:
+        for action in [ Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST ]:
             # Add a successor state to the successor list if the action is legal
             # Here's a code snippet for figuring out whether a new position hits a wall:
             #   x,y = currentPosition
