@@ -64,10 +64,10 @@ class SearchProblem:
 
 
 class Node:
-    def __init__(self, state : tuple, path : list):
+    def __init__(self, state : tuple, path : list, cost=0):
         self.state = state
         self.path = path
-
+        self.cost = cost
 
 def tinyMazeSearch(problem):
     """
@@ -134,8 +134,8 @@ def uniformCostSearch(problem):
         if node.state in explored: continue
         explored.add(node.state)
         for (state, action, cost) in problem.getSuccessors(node.state):
-            child = Node(state, node.path + [action])
-            fringe.push(child, problem.getCostOfActions(child.path))
+            child = Node(state, node.path + [action], cost=node.cost + cost)
+            fringe.push(child, child.cost)
 
     return None
 
@@ -150,8 +150,21 @@ def nullHeuristic(state, problem=None):
 
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    fringe = util.PriorityQueue()
+    explored = set()
+
+    fringe.push(Node(problem.getStartState(), []), 0)
+
+    while not fringe.isEmpty():
+        node = fringe.pop()
+        if problem.isGoalState(node.state): return node.path
+        if node.state in explored: continue
+        explored.add(node.state)
+        for (state, action, cost) in problem.getSuccessors(node.state):
+            child = Node(state, node.path + [action], cost=node.cost + cost)
+            fringe.push(child, child.cost + heuristic(state, problem))
+
+    return None
 
 
 # Abbreviations
