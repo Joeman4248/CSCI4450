@@ -92,13 +92,12 @@ def depthFirstSearch(problem):
 
     while not fringe.isEmpty():
         node = fringe.pop()
+        if problem.isGoalState(node.state): return node.path
+        if node.state in explored: continue
         explored.add(node.state)
-        if problem.isGoalState(node.state):
-            return node.path
         for (state, action, cost) in problem.getSuccessors(node.state):
             child = Node(state, node.path + [action])
-            if child.state not in explored:
-                fringe.push(child)
+            fringe.push(child)
 
     return None
 
@@ -112,21 +111,19 @@ def breadthFirstSearch(problem):
 
     while not fringe.isEmpty():
         node = fringe.pop()
+        if problem.isGoalState(node.state): return node.path
+        if node.state in explored: continue
         explored.add(node.state)
-        if problem.isGoalState(node.state):
-            return node.path
         for (state, action, cost) in problem.getSuccessors(node.state):
             child = Node(state, node.path + [action])
-            if child.state not in explored:
-                fringe.push(child)
+            fringe.push(child)
 
     return None
 
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    return None
 
 
 def nullHeuristic(state, problem=None):
