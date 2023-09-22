@@ -64,7 +64,7 @@ class SearchProblem:
 
 
 class Node:
-    def __init__(self, state : tuple, path : list, cost=0):
+    def __init__(self, state: tuple, path=[], cost=0):
         self.state = state
         self.path = path
         self.cost = cost
@@ -82,11 +82,11 @@ def tinyMazeSearch(problem):
     return [s, s, w, s, w, w, s, w]
 
 
-def graphSearch(problem : SearchProblem, fringe):
+def graphSearch(problem: SearchProblem, fringe):
     """ Generic graph search algorithm """
     explored = set()
 
-    fringe.push(Node(problem.getStartState(), []))
+    fringe.push(Node(problem.getStartState()))
 
     while not fringe.isEmpty():
         node = fringe.pop()
@@ -98,17 +98,17 @@ def graphSearch(problem : SearchProblem, fringe):
             fringe.push(child)
 
 
-def depthFirstSearch(problem : SearchProblem):
+def depthFirstSearch(problem: SearchProblem):
     """ Search the deepest nodes in the search tree first. """
     return graphSearch(problem, util.Stack())
 
 
-def breadthFirstSearch(problem : SearchProblem):
+def breadthFirstSearch(problem: SearchProblem):
     """ Search the shallowest nodes in the search tree first. """
     return graphSearch(problem, util.Queue())
 
 
-def uniformCostSearch(problem : SearchProblem):
+def uniformCostSearch(problem: SearchProblem):
     """ Search the node of least total cost first. """
     return aStarSearch(problem)
 
@@ -121,12 +121,12 @@ def nullHeuristic(state, problem=None):
     return 0
 
 
-def aStarSearch(problem : SearchProblem, heuristic=nullHeuristic):
+def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic):
     """ Search the node that has the lowest combined cost and heuristic first. """
     fringe = util.PriorityQueue()
     explored = set()
 
-    fringe.push(Node(problem.getStartState(), []), 0)
+    fringe.push(Node(problem.getStartState(), cost=0))
 
     while not fringe.isEmpty():
         node = fringe.pop()

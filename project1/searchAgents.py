@@ -338,13 +338,13 @@ class CornersProblem(search.SearchProblem):
         """
         return (self.startingPosition, (False, False, False, False))
 
-    def isGoalState(self, state : tuple):
+    def isGoalState(self, state: tuple):
         """
         Returns whether this search state is a goal state of the problem.
         """
         return all(state[1])
 
-    def getSuccessors(self, state : tuple):
+    def getSuccessors(self, state: tuple):
         """
         Returns successor states, the actions they require, and a cost of 1.
 
@@ -371,7 +371,7 @@ class CornersProblem(search.SearchProblem):
         self._expanded += 1  # DO NOT CHANGE
         return successors
 
-    def getCostOfActions(self, actions):
+    def getCostOfActions(self, actions: list):
         """
         Returns the cost of a particular sequence of actions.  If those actions
         include an illegal move, return 999999.  This is implemented for you.
@@ -387,7 +387,7 @@ class CornersProblem(search.SearchProblem):
         return len(actions)
 
 
-def cornersHeuristic(state : tuple, problem : search.SearchProblem):
+def cornersHeuristic(state: tuple, problem: CornersProblem):
     """
     A heuristic for the CornersProblem that you defined.
 
@@ -447,12 +447,7 @@ class FoodSearchProblem:
         "Returns successor states, the actions they require, and a cost of 1."
         successors = []
         self._expanded += 1  # DO NOT CHANGE
-        for direction in [
-            Directions.NORTH,
-            Directions.SOUTH,
-            Directions.EAST,
-            Directions.WEST,
-        ]:
+        for direction in [ Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST ]:
             x, y = state[0]
             dx, dy = Actions.directionToVector(direction)
             nextx, nexty = int(x + dx), int(y + dy)
@@ -485,7 +480,7 @@ class AStarFoodSearchAgent(SearchAgent):
         self.searchType = FoodSearchProblem
 
 
-def foodHeuristic(state : tuple, problem : search.SearchProblem):
+def foodHeuristic(state: tuple, problem: FoodSearchProblem):
     """
     Your heuristic for the FoodSearchProblem goes here.
 
