@@ -329,7 +329,7 @@ class CornersProblem(search.SearchProblem):
         self._expanded = 0  # DO NOT CHANGE; Number of search nodes expanded
         # Please add any code here which you would like to use
         # in initializing the problem
-        self.goal = dict.fromkeys(self.corners, False)
+        self.gameState = startingGameState
 
     def getStartState(self):
         """
@@ -403,8 +403,10 @@ def cornersHeuristic(state, problem):
     corners = problem.corners  # These are the corner coordinates
     walls = problem.walls  # These are the walls of the maze, as a Grid (game.py)
 
-    "*** YOUR CODE HERE ***"
-    return 0  # Default to trivial solution
+    # Maze distance to furthest corner
+    return max([mazeDistance(state[0], corner, problem.gameState)
+                for i, corner in enumerate(corners)
+                if not state[1][i]] + [0])
 
 
 class AStarCornersAgent(SearchAgent):
