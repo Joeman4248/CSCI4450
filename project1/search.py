@@ -69,6 +69,7 @@ class Node:
         self.path = path
         self.cost = cost
 
+
 def tinyMazeSearch(problem):
     """
     Returns a sequence of moves that solves tinyMaze.  For any other maze, the
