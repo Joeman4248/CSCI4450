@@ -402,11 +402,12 @@ def cornersHeuristic(state, problem):
     """
     corners = problem.corners  # These are the corner coordinates
     walls = problem.walls  # These are the walls of the maze, as a Grid (game.py)
+    position, visitedCorners = state
 
     # Maze distance to furthest corner
-    return max([mazeDistance(state[0], corner, problem.gameState)
+    return max([mazeDistance(position, corner, problem.gameState)
                 for i, corner in enumerate(corners)
-                if not state[1][i]] + [0])
+                if not visitedCorners[i]] + [0])
 
 
 class AStarCornersAgent(SearchAgent):
@@ -436,6 +437,7 @@ class FoodSearchProblem:
         self.startingGameState = startingGameState
         self._expanded = 0  # DO NOT CHANGE
         self.heuristicInfo = {}  # A dictionary for the heuristic to store information
+        self.gameState = startingGameState
 
     def getStartState(self):
         return self.start
@@ -513,9 +515,12 @@ def foodHeuristic(state, problem):
     Subsequent calls to this heuristic can access
     problem.heuristicInfo['wallCount']
     """
-    position, foodGrid = state
-    "*** YOUR CODE HERE ***"
-    return 0
+    position = state[0]
+    foodList = state[1].asList()
+
+    # Maze distance to furthest food
+    return max([mazeDistance(position, food, problem.gameState)
+                for food in foodList] + [0])
 
 
 class ClosestDotSearchAgent(SearchAgent):
