@@ -63,6 +63,12 @@ class SearchProblem:
         util.raiseNotDefined()
 
 
+class Node:
+    def __init__(self, state : tuple, path : list):
+        self.state = state
+        self.path = path
+
+
 def tinyMazeSearch(problem):
     """
     Returns a sequence of moves that solves tinyMaze.  For any other maze, the
@@ -78,25 +84,43 @@ def tinyMazeSearch(problem):
 def depthFirstSearch(problem):
     """
     Search the deepest nodes in the search tree first.
-
-    Your search algorithm needs to return a list of actions that reaches the
-    goal. Make sure to implement a graph search algorithm.
-
-    To get started, you might want to try some of these simple commands to
-    understand the search problem that is being passed in:
-
-    print("Start:", problem.getStartState())
-    print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
-    print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     """
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    fringe = util.Stack()
+    explored = set()
+
+    fringe.push(Node(problem.getStartState(), []))
+
+    while not fringe.isEmpty():
+        node = fringe.pop()
+        explored.add(node.state)
+        if problem.isGoalState(node.state):
+            return node.path
+        for (state, action, cost) in problem.getSuccessors(node.state):
+            child = Node(state, node.path + [action])
+            if child.state not in explored:
+                fringe.push(child)
+
+    return None
 
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    fringe = util.Queue()
+    explored = set()
+
+    fringe.push(Node(problem.getStartState(), []))
+
+    while not fringe.isEmpty():
+        node = fringe.pop()
+        explored.add(node.state)
+        if problem.isGoalState(node.state):
+            return node.path
+        for (state, action, cost) in problem.getSuccessors(node.state):
+            child = Node(state, node.path + [action])
+            if child.state not in explored:
+                fringe.push(child)
+
+    return None
 
 
 def uniformCostSearch(problem):
