@@ -126,7 +126,7 @@ def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic):
     fringe = util.PriorityQueue()
     explored = set()
 
-    fringe.push(Node(problem.getStartState(), cost=0))
+    fringe.push(Node(problem.getStartState()), 0)
 
     while not fringe.isEmpty():
         node = fringe.pop()
