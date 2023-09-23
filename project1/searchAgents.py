@@ -39,6 +39,7 @@ import time
 import search
 import util
 from game import Actions, Agent, Directions
+from pacman import GameState
 
 
 class GoWestAgent(Agent):
@@ -315,7 +316,7 @@ class CornersProblem(search.SearchProblem):
     You must select a suitable state space and successor function
     """
 
-    def __init__(self, startingGameState):
+    def __init__(self, startingGameState: GameState):
         """
         Stores the walls, pacman's starting position and corners.
         """
@@ -426,7 +427,7 @@ class FoodSearchProblem:
       foodGrid:       a Grid (see game.py) of either True or False, specifying remaining food
     """
 
-    def __init__(self, startingGameState):
+    def __init__(self, startingGameState: GameState):
         self.start = (
             startingGameState.getPacmanPosition(),
             startingGameState.getFood(),
@@ -538,7 +539,7 @@ class ClosestDotSearchAgent(SearchAgent):
         self.actionIndex = 0
         print("Path found with cost %d." % len(self.actions))
 
-    def findPathToClosestDot(self, gameState):
+    def findPathToClosestDot(self, gameState: GameState):
         """
         Returns a path (a list of actions) to the closest dot, starting from
         gameState.
