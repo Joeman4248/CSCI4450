@@ -405,8 +405,8 @@ def cornersHeuristic(state: tuple, problem: CornersProblem):
 
     # Maze distance to furthest corner
     return max([mazeDistance(position, corner, problem.gameState)
-                for corner, visited in zip(problem.corners, visitedCorners)
-                if not visited] + [0])
+                for corner, visitedCorner in zip(problem.corners, visitedCorners)
+                if not visitedCorner] + [0])
 
 
 class AStarCornersAgent(SearchAgent):
