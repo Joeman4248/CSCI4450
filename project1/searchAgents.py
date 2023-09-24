@@ -359,16 +359,15 @@ class CornersProblem(search.SearchProblem):
 
         successors = []
         for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
-            (x, y) = state[0]
+            x, y = state[0]
+            cornersVisited = state[1]
             dx, dy = Actions.directionToVector(action)
             nextx, nexty = int(x + dx), int(y + dy)
             if not self.walls[nextx][nexty]:
                 nextState = (nextx, nexty)
-                nextCorners = list(state[1])
-                for i, corner in enumerate(self.corners):
-                    if corner == nextState:
-                        nextCorners[i] = True
-                successors.append(((nextState, tuple(nextCorners)), action, 1))
+                nextCorners = tuple(True if corner == nextState else cornerVisited
+                                    for corner, cornerVisited in zip(self.corners, cornersVisited))
+                successors.append(((nextState, nextCorners), action, 1))
 
         self._expanded += 1  # DO NOT CHANGE
         return successors

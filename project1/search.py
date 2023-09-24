@@ -134,7 +134,7 @@ def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic):
         if node.state in explored: continue
         explored.add(node.state)
         for (state, action, cost) in problem.getSuccessors(node.state):
-            child = Node(state, node.path + [action], cost=node.cost + cost)
+            child = Node(state, node.path + [action], node.cost + cost)
             fringe.push(child, child.cost + heuristic(state, problem))
 
 
