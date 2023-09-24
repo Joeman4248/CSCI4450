@@ -582,7 +582,6 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         complete the problem definition.
         """
         x, y = state
-
         return self.food[x][y]
 
 
