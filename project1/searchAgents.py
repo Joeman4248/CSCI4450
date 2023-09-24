@@ -343,7 +343,8 @@ class CornersProblem(search.SearchProblem):
         """
         Returns whether this search state is a goal state of the problem.
         """
-        return all(state[1])
+        cornersVisited = state[1]
+        return all(cornersVisited)
 
     def getSuccessors(self, state: tuple):
         """
