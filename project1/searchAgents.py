@@ -360,9 +360,9 @@ class CornersProblem(search.SearchProblem):
         successors = []
         for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
             x, y = state[0]
-            cornersVisited = state[1]
             dx, dy = Actions.directionToVector(action)
             nextx, nexty = int(x + dx), int(y + dy)
+            cornersVisited = state[1]
             if not self.walls[nextx][nexty]:
                 nextState = (nextx, nexty)
                 nextCorners = tuple(True if corner == nextState else cornerVisited
@@ -401,12 +401,12 @@ def cornersHeuristic(state: tuple, problem: CornersProblem):
     shortest path from the state to a goal of the problem; i.e.  it should be
     admissible (as well as consistent).
     """
-    position, visitedCorners = state
+    position, cornersVisited = state
 
     # Maze distance to furthest corner
     return max([mazeDistance(position, corner, problem.gameState)
-                for corner, visitedCorner in zip(problem.corners, visitedCorners)
-                if not visitedCorner] + [0])
+                for corner, cornerVisited in zip(problem.corners, cornersVisited)
+                if not cornerVisited] + [0])
 
 
 class AStarCornersAgent(SearchAgent):
