@@ -365,7 +365,7 @@ class CornersProblem(search.SearchProblem):
             cornersVisited = state[1]
             if not self.walls[nextx][nexty]:
                 nextState = (nextx, nexty)
-                nextCorners = tuple(True if corner == nextState else cornerVisited
+                nextCorners = tuple(True if nextState == corner else cornerVisited
                                     for corner, cornerVisited in zip(self.corners, cornersVisited))
                 successors.append(((nextState, nextCorners), action, 1))
 
