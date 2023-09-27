@@ -15,7 +15,7 @@
 import random
 
 import util
-from game import Agent, Directions
+from game import Agent, Directions, AgentState
 from util import manhattanDistance
 from pacman import GameState
 
@@ -77,6 +77,7 @@ class ReflexAgent(Agent):
         newScaredTimes = [ghostState.scaredTimer for ghostState in newGhostStates]
 
         "*** YOUR CODE HERE ***"
+
         return successorGameState.getScore()
 
 
