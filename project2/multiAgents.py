@@ -17,6 +17,7 @@ import random
 import util
 from game import Agent, Directions
 from util import manhattanDistance
+from pacman import GameState
 
 
 class ReflexAgent(Agent):
@@ -29,7 +30,7 @@ class ReflexAgent(Agent):
     headers.
     """
 
-    def getAction(self, gameState):
+    def getAction(self, gameState: GameState):
         """
         You do not need to change this method, but you're welcome to.
 
@@ -53,7 +54,7 @@ class ReflexAgent(Agent):
 
         return legalMoves[chosenIndex]
 
-    def evaluationFunction(self, currentGameState, action):
+    def evaluationFunction(self, currentGameState: GameState, action):
         """
         Design a better evaluation function here.
 
@@ -79,7 +80,7 @@ class ReflexAgent(Agent):
         return successorGameState.getScore()
 
 
-def scoreEvaluationFunction(currentGameState):
+def scoreEvaluationFunction(currentGameState: GameState):
     """
     This default evaluation function just returns the score of the state.
     The score is the same one displayed in the Pacman GUI.
@@ -116,7 +117,7 @@ class MinimaxAgent(MultiAgentSearchAgent):
     Your minimax agent (question 2)
     """
 
-    def getAction(self, gameState):
+    def getAction(self, gameState: GameState):
         """
         Returns the minimax action from the current gameState using self.depth
         and self.evaluationFunction.
@@ -148,7 +149,7 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
     Your minimax agent with alpha-beta pruning (question 3)
     """
 
-    def getAction(self, gameState):
+    def getAction(self, gameState: GameState):
         """
         Returns the minimax action using self.depth and self.evaluationFunction
         """
@@ -161,7 +162,7 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
     Your expectimax agent (question 4)
     """
 
-    def getAction(self, gameState):
+    def getAction(self, gameState: GameState):
         """
         Returns the expectimax action using self.depth and self.evaluationFunction
 
@@ -172,7 +173,7 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
         util.raiseNotDefined()
 
 
-def betterEvaluationFunction(currentGameState):
+def betterEvaluationFunction(currentGameState: GameState):
     """
     Your extreme ghost-hunting, pellet-nabbing, food-gobbling, unstoppable
     evaluation function (question 5).
