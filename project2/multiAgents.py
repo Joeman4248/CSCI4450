@@ -15,6 +15,7 @@
 import random
 
 import util
+import pacman
 from game import Agent, Directions, AgentState
 from util import manhattanDistance
 from pacman import GameState
@@ -76,9 +77,59 @@ class ReflexAgent(Agent):
         newGhostStates = successorGameState.getGhostStates()
         newScaredTimes = [ghostState.scaredTimer for ghostState in newGhostStates]
 
-        "*** YOUR CODE HERE ***"
+        # Score to add to existing successor score
+        scoreChange = 0
 
-        return successorGameState.getScore()
+        if successorGameState.isLose():
+            scoreChange -= 10000
+
+        # Manhattan distance to available foods from successor state
+        newFoodList = successorGameState.getFood().asList()
+        newFoodDistance = [manhattanDistance(newPos, pos) for pos in newFoodList]
+        newFoodCount = len(newFoodList)
+
+        # Manhattan distance to available foods from current state
+        foodList = currentGameState.getFood().asList()
+        foodDistance = [manhattanDistance(newPos, pos) for pos in foodList]
+        foodCount = len(foodList)
+
+        scoreChange -= min(newFoodDistance, default=0) // 2
+
+        scoreChange -= min([manhattanDistance(newPos, pos) for pos in successorGameState.getCapsules()], default=0)
+
+        if newFoodCount < foodCount:
+            scoreChange += 200
+
+        if len(successorGameState.getCapsules()) < len(currentGameState.getCapsules()):
+            scoreChange += 400
+
+        scoreChange -= 10 * newFoodCount
+
+        # Manhattan distance to ghosts from successor state
+        newGhostDistance = [manhattanDistance(newPos, pos) for pos in successorGameState.getGhostPositions()]
+
+        # Manhattan distance to ghosts from current state
+        ghostDistance = [manhattanDistance(newPos, pos) for pos in currentGameState.getGhostPositions()]
+
+        # Are ghosts closer or further away in the successor state?
+        ghostCloser = min(newGhostDistance, default=0) < min(ghostDistance)
+        ghostsScared = sum(newScaredTimes) > 2
+
+        if ghostsScared:
+            if ghostCloser:
+                scoreChange += 500
+            else:
+                scoreChange -= 200
+        else:
+            if ghostCloser:
+                scoreChange -= 500
+            else:
+                scoreChange += 100
+
+        if action == Directions.STOP:
+            scoreChange -= 15
+
+        return successorGameState.getScore() + scoreChange
 
 
 def scoreEvaluationFunction(currentGameState: GameState):
