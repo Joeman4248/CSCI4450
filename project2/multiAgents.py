@@ -176,11 +176,16 @@ class MinimaxAgent(MultiAgentSearchAgent):
         Returns the minimax action from the current gameState using self.depth
         and self.evaluationFunction.
         """
-        actionList = gameState.getLegalActions(PACMAN_INDEX)
-        scoreList = [self.minState(gameState.generateSuccessor(PACMAN_INDEX, action), depth=0)
-                     for action in actionList]
+        maxScore = float('-inf')
+        maxAction = None
+        depth = 0
+        for action in gameState.getLegalActions(PACMAN_INDEX):
+            successor = gameState.generateSuccessor(PACMAN_INDEX, action)
+            score = self.minState(successor, depth)
+            if score > maxScore:
+                maxScore, maxAction = score, action
 
-        return actionList[scoreList.index(max(scoreList))]
+        return maxAction
 
     # Used for Pacman
     def maxState(self, gameState: GameState, depth: int, agentIndex=PACMAN_INDEX):
@@ -225,6 +230,17 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         beta = float('inf')
         maxScore = float('-inf')
         maxAction = None
+        depth = 0
+        for action in gameState.getLegalActions(PACMAN_INDEX):
+            successor = gameState.generateSuccessor(PACMAN_INDEX, action)
+            score = self.minState(successor, depth, alpha, beta)
+            if score > maxScore:
+                maxScore, maxAction = score, action
+            if maxScore > beta:
+                return maxAction
+            alpha = max(maxScore, alpha)
+
+        return maxAction
 
     def maxState(self, gameState: GameState, depth: int, alpha: int, beta: int, agentIndex=PACMAN_INDEX):
         # Check for terminal state
@@ -234,7 +250,7 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         maxScore = float('-inf')
         for action in gameState.getLegalActions(agentIndex):
             successor = gameState.generateSuccessor(agentIndex, action)
-            maxScore = max(maxScore, self.minState(successor, depth+1, alpha, beta))
+            maxScore = max(maxScore, self.minState(successor, depth, alpha, beta))
 
             if maxScore > beta:
                 return maxScore
@@ -252,9 +268,9 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
             successor = gameState.generateSuccessor(agentIndex, action)
             # if last ghost, switch to Pacman, otherwise switch to next ghost
             if agentIndex == (gameState.getNumAgents() - 1):
-                minScore = min(minScore, self.maxState(successor, depth+1))
+                minScore = min(minScore, self.maxState(successor, depth+1, alpha, beta))
             else:
-                minScore = min(minScore, self.minState(successor, depth, agentIndex+1))
+                minScore = min(minScore, self.minState(successor, depth, alpha, beta, agentIndex+1))
 
             if minScore < alpha:
                 return minScore
