@@ -175,42 +175,28 @@ class MinimaxAgent(MultiAgentSearchAgent):
         """
         Returns the minimax action from the current gameState using self.depth
         and self.evaluationFunction.
-
-        Here are some method calls that might be useful when implementing minimax.
-
-        gameState.getLegalActions(agentIndex):
-        Returns a list of legal actions for an agent
-        agentIndex=0 means Pacman, ghosts are >= 1
-
-        gameState.generateSuccessor(agentIndex, action):
-        Returns the successor game state after an agent takes an action
-
-        gameState.getNumAgents():
-        Returns the total number of agents in the game
-
-        gameState.isWin():
-        Returns whether or not the game state is a winning state
-
-        gameState.isLose():
-        Returns whether or not the game state is a losing state
         """
-        return self.maxState(gameState, depth=0)
+        actionList = gameState.getLegalActions(PACMAN_INDEX)
+        scoreList = [self.minState(gameState.generateSuccessor(PACMAN_INDEX, action), depth=0)
+                     for action in actionList]
+
+        return actionList[scoreList.index(max(scoreList))]
 
     # Used for Pacman
-    def maxState(self, gameState: GameState, depth: int):
+    def maxState(self, gameState: GameState, depth: int, agentIndex=PACMAN_INDEX):
         # Check for terminal state
         if gameState.isWin() or gameState.isLose() or depth == self.depth:
             return self.evaluationFunction(gameState)
 
         stateList = []
-        for action in gameState.getLegalPacmanActions():
-            successor = gameState.generatePacmanSuccessor(action)
+        for action in gameState.getLegalActions(agentIndex):
+            successor = gameState.generateSuccessor(agentIndex, action)
             stateList.append(self.minState(successor, depth))
 
         return max(stateList)
 
     # Used for Ghosts
-    def minState(self, gameState: GameState, depth: int, agentIndex=1):
+    def minState(self, gameState: GameState, depth: int, agentIndex=GHOST_INDEX):
         # Check for terminal state
         if gameState.isWin() or gameState.isLose() or depth == self.depth:
             return self.evaluationFunction(gameState)
