@@ -194,8 +194,7 @@ class MinimaxAgent(MultiAgentSearchAgent):
         gameState.isLose():
         Returns whether or not the game state is a losing state
         """
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return self.maxState(gameState, depth=0)
 
     # Used for Pacman
     def maxState(self, gameState: GameState, depth: int):
