@@ -176,12 +176,13 @@ class MinimaxAgent(MultiAgentSearchAgent):
         Returns the minimax action from the current gameState using self.depth
         and self.evaluationFunction.
         """
+        agentIndex = PACMAN_INDEX
+        depth = 0
         maxScore = float('-inf')
         maxAction = None
-        depth = 0
-        for action in gameState.getLegalActions(PACMAN_INDEX):
-            successor = gameState.generateSuccessor(PACMAN_INDEX, action)
-            score = self.pacmanScore(successor, depth)
+        for action in gameState.getLegalActions(agentIndex):
+            successor = gameState.generateSuccessor(agentIndex, action)
+            score = self.ghostScore(successor, depth)
             if score > maxScore:
                 maxScore, maxAction = score, action
 
@@ -226,13 +227,14 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         """
         Returns the minimax action using self.depth and self.evaluationFunction
         """
-        alpha = float('-inf')
-        beta = float('inf')
+        agentIndex = PACMAN_INDEX
+        depth = 0
         maxScore = float('-inf')
         maxAction = None
-        depth = 0
-        for action in gameState.getLegalActions(PACMAN_INDEX):
-            successor = gameState.generateSuccessor(PACMAN_INDEX, action)
+        alpha = float('-inf')
+        beta = float('inf')
+        for action in gameState.getLegalActions(agentIndex):
+            successor = gameState.generateSuccessor(agentIndex, action)
             score = self.ghostScore(successor, depth, alpha, beta)
             if score > maxScore:
                 maxScore, maxAction = score, action
@@ -291,11 +293,12 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
         All ghosts should be modeled as choosing uniformly at random from their
         legal moves.
         """
+        agentIndex = PACMAN_INDEX
+        depth = 0
         maxScore = float('-inf')
         maxAction = None
-        depth = 0
-        for action in gameState.getLegalActions(PACMAN_INDEX):
-            successor = gameState.generateSuccessor(PACMAN_INDEX, action)
+        for action in gameState.getLegalActions(agentIndex):
+            successor = gameState.generateSuccessor(agentIndex, action)
             score = self.ghostScore(successor, depth)
             if score > maxScore:
                 maxScore, maxAction = score, action
