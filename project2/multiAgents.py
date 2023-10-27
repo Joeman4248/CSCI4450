@@ -342,9 +342,58 @@ def betterEvaluationFunction(currentGameState: GameState):
 
     DESCRIPTION: <write something here so we know what you did>
     """
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    # Useful information you can extract from a GameState (pacman.py)
+    successorGameState = currentGameState
+    newPos = successorGameState.getPacmanPosition()
+    newFood = successorGameState.getFood()
+    newGhostStates = successorGameState.getGhostStates()
+    newScaredTimes = [ghostState.scaredTimer for ghostState in newGhostStates]
+    sumNewScaredTimes = sum(newScaredTimes)
 
+    # Score to add to existing successor score
+    scoreChange = 0.0
+
+    if successorGameState.isLose():
+        scoreChange -= 10000
+
+    # Manhattan distance to available foods from successor state
+    newFoodList = successorGameState.getFood().asList()
+    newFoodDistance = [manhattanDistance(newPos, pos) for pos in newFoodList]
+    newFoodCount = len(newFoodList)
+
+    # Manhattan distance to available foods from current state
+    foodList = currentGameState.getFood().asList()
+    foodDistance = [manhattanDistance(newPos, pos) for pos in foodList]
+    foodCount = len(foodList)
+
+    sumFood = sum(foodDistance)
+    if sumFood:
+        scoreChange += 2 * (1.0 / sumFood)
+
+    scoreChange += len(successorGameState.getFood().asList(False)) # count all the non-food spaces
+
+    scoreChange -= min(newFoodDistance, default=0)
+
+    # Manhattan distance to ghosts from successor state
+    newGhostDistance = [manhattanDistance(newPos, pos) for pos in successorGameState.getGhostPositions()]
+
+    # Manhattan distance to ghosts from current state
+    ghostDistance = [manhattanDistance(newPos, pos) for pos in currentGameState.getGhostPositions()]
+
+    # Are ghosts closer or further away in the successor state?
+
+    # Are ghosts close or far away?
+    ghostsScared = sumNewScaredTimes > 0
+    if ghostsScared > 0:
+        scoreChange += sumNewScaredTimes
+        scoreChange -= sum(ghostDistance)
+    else:
+        scoreChange += sum(ghostDistance) / 10
+        scoreChange += 2
+
+    scoreChange += (random.random() * 2) # add randomness to get us unstuck
+
+    return successorGameState.getScore() + scoreChange
 
 # Abbreviation
 better = betterEvaluationFunction
