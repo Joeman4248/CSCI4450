@@ -315,6 +315,22 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
 
         return maxScore
 
+    def ghostScore(self, gameState: GameState, depth: int, agentIndex=GHOST_INDEX):
+        # Check for terminal state
+        if gameState.isWin() or gameState.isLose() or depth == self.depth:
+            return self.evaluationFunction(gameState)
+
+        expectedSum = 0.0
+        actions = gameState.getLegalActions(agentIndex)
+        for action in actions:
+            successor = gameState.generateSuccessor(agentIndex, action)
+            # if last ghost, switch to Pacman, otherwise switch to next ghost
+            if agentIndex == (gameState.getNumAgents() - 1):
+                expectedSum += self.pacmanScore(successor, depth+1)
+            else:
+                expectedSum += self.ghostScore(successor, depth, agentIndex+1)
+
+        return expectedSum / len(actions)
 
 def betterEvaluationFunction(currentGameState: GameState):
     """
