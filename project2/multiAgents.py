@@ -188,12 +188,12 @@ class MinimaxAgent(MultiAgentSearchAgent):
         if gameState.isWin() or gameState.isLose() or depth == self.depth:
             return self.evaluationFunction(gameState)
 
-        stateList = []
+        maxScore = float('-inf')
         for action in gameState.getLegalActions(agentIndex):
             successor = gameState.generateSuccessor(agentIndex, action)
-            stateList.append(self.minState(successor, depth))
+            maxScore = max(maxScore, self.minState(successor, depth))
 
-        return max(stateList)
+        return maxScore
 
     # Used for Ghosts
     def minState(self, gameState: GameState, depth: int, agentIndex=GHOST_INDEX):
@@ -201,16 +201,16 @@ class MinimaxAgent(MultiAgentSearchAgent):
         if gameState.isWin() or gameState.isLose() or depth == self.depth:
             return self.evaluationFunction(gameState)
 
-        stateList = []
+        minScore = float('inf')
         for action in gameState.getLegalActions(agentIndex):
             successor = gameState.generateSuccessor(agentIndex, action)
             # if last ghost, switch to Pacman, otherwise switch to next ghost
             if agentIndex == (gameState.getNumAgents() - 1):
-                stateList.append(self.maxState(successor, depth+1))
+                minScore = min(minScore, self.maxState(successor, depth+1))
             else:
-                stateList.append(self.minState(successor, depth, agentIndex+1))
+                minScore = min(minScore, self.minState(successor, depth, agentIndex+1))
 
-        return min(stateList)
+        return minScore
 
 class AlphaBetaAgent(MultiAgentSearchAgent):
     """
@@ -221,8 +221,46 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         """
         Returns the minimax action using self.depth and self.evaluationFunction
         """
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        alpha = float('-inf')
+        beta = float('inf')
+        maxScore = float('-inf')
+        maxAction = None
+
+    def maxState(self, gameState: GameState, depth: int, alpha: int, beta: int, agentIndex=PACMAN_INDEX):
+        # Check for terminal state
+        if gameState.isWin() or gameState.isLose() or depth == self.depth:
+            return self.evaluationFunction(gameState)
+
+        maxScore = float('-inf')
+        for action in gameState.getLegalActions(agentIndex):
+            successor = gameState.generateSuccessor(agentIndex, action)
+            maxScore = max(maxScore, self.minState(successor, depth+1, alpha, beta))
+
+            if maxScore > beta:
+                return maxScore
+            alpha = max(maxScore, alpha)
+
+        return maxScore
+
+    def minState(self, gameState: GameState, depth: int, alpha: int, beta: int, agentIndex=GHOST_INDEX):
+        # Check for terminal state
+        if gameState.isWin() or gameState.isLose() or depth == self.depth:
+            return self.evaluationFunction(gameState)
+
+        minScore = float('inf')
+        for action in gameState.getLegalActions(agentIndex):
+            successor = gameState.generateSuccessor(agentIndex, action)
+            # if last ghost, switch to Pacman, otherwise switch to next ghost
+            if agentIndex == (gameState.getNumAgents() - 1):
+                minScore = min(minScore, self.maxState(successor, depth+1))
+            else:
+                minScore = min(minScore, self.minState(successor, depth, agentIndex+1))
+
+            if minScore < alpha:
+                return minScore
+            beta = min(minScore, beta)
+
+        return minScore
 
 
 class ExpectimaxAgent(MultiAgentSearchAgent):
