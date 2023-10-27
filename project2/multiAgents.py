@@ -20,6 +20,8 @@ from game import Agent, Directions, AgentState
 from util import manhattanDistance
 from pacman import GameState
 
+GHOST_INDEX = 1
+PACMAN_INDEX = 0
 
 class ReflexAgent(Agent):
     """
@@ -195,6 +197,35 @@ class MinimaxAgent(MultiAgentSearchAgent):
         "*** YOUR CODE HERE ***"
         util.raiseNotDefined()
 
+    # Used for Pacman
+    def maxState(self, gameState: GameState, depth: int):
+        # Check for terminal state
+        if gameState.isWin() or gameState.isLose() or depth == self.depth:
+            return self.evaluationFunction(gameState)
+
+        stateList = []
+        for action in gameState.getLegalPacmanActions():
+            successor = gameState.generatePacmanSuccessor(action)
+            stateList.append(self.minState(successor, depth))
+
+        return max(stateList)
+
+    # Used for Ghosts
+    def minState(self, gameState: GameState, depth: int, agentIndex=1):
+        # Check for terminal state
+        if gameState.isWin() or gameState.isLose() or depth == self.depth:
+            return self.evaluationFunction(gameState)
+
+        stateList = []
+        for action in gameState.getLegalActions(agentIndex):
+            successor = gameState.generateSuccessor(agentIndex, action)
+            # if last ghost, switch to Pacman, otherwise switch to next ghost
+            if agentIndex == (gameState.getNumAgents() - 1):
+                stateList.append(self.maxState(successor, depth+1))
+            else:
+                stateList.append(self.minState(successor, depth, agentIndex+1))
+
+        return min(stateList)
 
 class AlphaBetaAgent(MultiAgentSearchAgent):
     """
